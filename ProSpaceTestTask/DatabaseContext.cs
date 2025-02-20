@@ -13,17 +13,8 @@ public class DatabaseContext : DbContext
     public DbSet<OrderElement> OrderElements { get; set; } = null!;
     public DbSet<Item> Items { get; set; } = null!;
 
-    public DatabaseContext()
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json")
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .Build();
-        optionsBuilder.UseNpgsql(config.GetConnectionString("DefaultConnection"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -55,7 +46,7 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<User>()
             .HasOne(x => x.Customer)
             .WithOne(y => y.User)
-            .HasForeignKey<User>(z=>z.CustomerId);
+            .HasForeignKey<User>(z => z.CustomerId);
 
         modelBuilder.Entity<Order>()
             .HasOne(x => x.Customer)

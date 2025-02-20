@@ -1,15 +1,18 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using ProSpaceTestTask;
+using ProSpaceTestTask.Repositories;
+using ProSpaceTestTask.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("appsettings.json");
-builder.Services.AddDbContext<DatabaseContext>();
+builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllersWithViews().AddJsonOptions(opts =>
 {
@@ -61,8 +64,8 @@ builder.Services.AddAuthentication(opt =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuer = "https://localhost:5001",
-            ValidAudience = "https://localhost:5001",
+            ValidIssuer = "https://localhost:5284",
+            ValidAudience = "https://localhost:5284",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKeyforProSpaseTestTask@345")),
             ValidateIssuer = true,
             ValidateAudience = true,
@@ -72,6 +75,10 @@ builder.Services.AddAuthentication(opt =>
         };
     });
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<IService, Service>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var app = builder.Build();
 
@@ -91,6 +98,6 @@ app.UseSwagger();
 app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/prospase/swagger.json", "prospase"));
 
 app.MapGet("/", () => "Hello World!");
-
+app.MapControllers();
 
 app.Run();

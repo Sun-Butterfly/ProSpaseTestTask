@@ -10,7 +10,7 @@
       ConnectionStrings__DefaultConnection: 'Host=postgres;Port=5432;Username=postgres;Password=123;Database=ProSpaceDatabase'
     
     ports:
-      - "7070:80"
+      - "5284:80"
         
   postgres:
     container_name: postgres-prospase
