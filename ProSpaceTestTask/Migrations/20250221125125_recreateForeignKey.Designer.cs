@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProSpaceTestTask;
@@ -11,9 +12,11 @@ using ProSpaceTestTask;
 namespace ProSpaceTestTask.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250221125125_recreateForeignKey")]
+    partial class recreateForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +28,7 @@ namespace ProSpaceTestTask.Migrations
             modelBuilder.Entity("ProSpaceTestTask.Models.Customer", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
@@ -42,7 +46,13 @@ namespace ProSpaceTestTask.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -164,6 +174,10 @@ namespace ProSpaceTestTask.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasColumnType("text");
@@ -186,7 +200,8 @@ namespace ProSpaceTestTask.Migrations
                 {
                     b.HasOne("ProSpaceTestTask.Models.User", "User")
                         .WithOne("Customer")
-                        .HasForeignKey("ProSpaceTestTask.Models.Customer", "Id")
+                        .HasForeignKey("ProSpaceTestTask.Models.Customer", "UserId")
+                        .HasPrincipalKey("ProSpaceTestTask.Models.User", "CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

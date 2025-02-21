@@ -24,12 +24,16 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result>
         {
             return Result.Fail("Пользователь с таким логином уже существует!");
         }
-        
+        var role = await _userRepository.GetRoleByName(request.RoleName, cancellationToken);
+        if (role == null)
+        {
+            return Result.Fail("Роль не найдена!");
+        }
         user = new User()
         {
             Login = request.Login,
             Password = request.Password,
-            RoleId = _service.GetRoleId(),
+            Role = role,
             Customer = new Customer()
             {
                 Name = request.Name,

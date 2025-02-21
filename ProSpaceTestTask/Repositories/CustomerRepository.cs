@@ -20,4 +20,9 @@ class CustomerRepository : ICustomerRepository
     {
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+    public void Delete(Customer customer)
+    {
+        _db.Remove(customer);
+    }
 }

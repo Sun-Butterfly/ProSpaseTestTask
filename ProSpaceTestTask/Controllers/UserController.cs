@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.CreateUser;
+using ProSpaceTestTask.MediatR.RedactUser;
 
 namespace ProSpaceTestTask.Controllers;
 
@@ -32,8 +33,13 @@ public class UserController : Controller
     
     [HttpPut]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> RedactUser()
+    public async Task<IActionResult> RedactUser([FromBody]RedactUserRequest redactUserRequest)
     {
+        var result = await _mediator.Send(redactUserRequest);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
         return Ok();
     }
     

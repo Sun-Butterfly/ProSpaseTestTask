@@ -43,10 +43,19 @@ public class DatabaseContext : DbContext
                 }
             });
 
-        modelBuilder.Entity<User>()
-            .HasOne(x => x.Customer)
-            .WithOne(y => y.User)
-            .HasForeignKey<User>(z => z.CustomerId);
+        // modelBuilder.Entity<Customer>()
+        //     .HasOne(x => x.User)
+        //     .WithOne(y => y.Customer)
+        //     .HasForeignKey<Customer>(z => z.UserId)
+        //     .HasPrincipalKey<User>(z=>z.CustomerId);
+
+        modelBuilder.Entity<Customer>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<Customer>()
+            .HasOne(x => x.User)
+            .WithOne(y => y.Customer)
+            .HasForeignKey<Customer>(z => z.Id);
 
         modelBuilder.Entity<Order>()
             .HasOne(x => x.Customer)

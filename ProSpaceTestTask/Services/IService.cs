@@ -4,4 +4,5 @@ public interface IService
 {
     string GenerateCustomerCode();
     int GetRoleId();
+    
 }

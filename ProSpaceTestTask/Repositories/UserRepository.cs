@@ -33,4 +33,37 @@ class UserRepository : IUserRepository
             .Include(x => x.Role)
             .FirstOrDefaultAsync(x => x.Login == login && x.Password == password, cancellationToken);
     }
+
+    public async Task<User?> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        return await _db.Users
+            .Include(x=>x.Role)
+            .Include(x=>x.Customer)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+
+    public void Update(User user)
+    {
+        _db.Update(user);
+    }
+
+    public async Task ChangeRoleByRoleName(string roleName, Guid id, CancellationToken cancellationToken)
+    {
+        var user = await _db.Users.FirstAsync(x => x.Id == id, cancellationToken);
+        
+        switch (roleName)
+        {
+            case "customer":
+                user.RoleId = 2;
+                break;
+            case "administrator":
+                user.RoleId = 1;
+                break;
+        }
+    }
+
+    public async Task<Role?> GetRoleByName(string roleName, CancellationToken cancellationToken)
+    {
+        return await _db.Roles.FirstOrDefaultAsync(x => x.Name == roleName, cancellationToken);
+    }
 }
