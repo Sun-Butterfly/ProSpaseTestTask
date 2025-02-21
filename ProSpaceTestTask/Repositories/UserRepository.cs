@@ -26,4 +26,11 @@ class UserRepository : IUserRepository
     {
         return await _db.Users.FirstOrDefaultAsync(x => x.Login == login, cancellationToken);
     }
+
+    public async Task<User?> GetByLoginAndPassword(string login, string password, CancellationToken cancellationToken)
+    {
+        return await _db.Users
+            .Include(x => x.Role)
+            .FirstOrDefaultAsync(x => x.Login == login && x.Password == password, cancellationToken);
+    }
 }
