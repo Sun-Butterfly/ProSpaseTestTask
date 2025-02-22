@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.CreateItem;
 using ProSpaceTestTask.MediatR.GetAllItems;
+using ProSpaceTestTask.MediatR.RedactItem;
 
 namespace ProSpaceTestTask.Controllers;
 
@@ -47,8 +48,13 @@ public class ItemController : Controller
 
     [HttpPut]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> RedactItem()
+    public async Task<IActionResult> RedactItem([FromBody]RedactItemRequest request)
     {
+        var result = await _mediator.Send(request);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
         return Ok();
     }
 

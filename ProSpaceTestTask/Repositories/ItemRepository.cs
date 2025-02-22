@@ -39,4 +39,9 @@ class ItemRepository : IItemRepository
                 x.Category))
             .ToListAsync(cancellationToken);
     }
+
+    public async Task<Item?> GetById(Guid id, CancellationToken cancellationToken)
+    {
+        return await _db.Items.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
 }
