@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.Models;
 
 namespace ProSpaceTestTask.Repositories;
@@ -27,8 +28,15 @@ class ItemRepository : IItemRepository
         _db.Items.Update(item);
     }
 
-    public async Task<List<Item>> GetAll(CancellationToken cancellationToken)
+    public async Task<List<GetAllItemsDto>> GetAll(CancellationToken cancellationToken)
     {
-        return await _db.Items.ToListAsync(cancellationToken);
+        return await _db.Items
+            .Select(x => new GetAllItemsDto(
+                x.Id,
+                x.Code,
+                x.Name,
+                x.Price,
+                x.Category))
+            .ToListAsync(cancellationToken);
     }
 }

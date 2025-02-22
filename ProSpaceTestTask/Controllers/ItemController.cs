@@ -30,7 +30,7 @@ public class ItemController : Controller
             return BadRequest(new ErrorModel(result.StringifyErrors()));
         }
 
-        return Ok(result.Value.Items);
+        return Ok(result.Value.ItemsDto);
     }
 
     [HttpPost]
