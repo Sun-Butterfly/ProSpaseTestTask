@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
+using ProSpaceTestTask.MediatR.CreateItem;
 using ProSpaceTestTask.MediatR.GetAllItems;
 
 namespace ProSpaceTestTask.Controllers;
@@ -34,8 +35,13 @@ public class ItemController : Controller
 
     [HttpPost]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> CreateItem()
+    public async Task<IActionResult> CreateItem([FromBody]CreateItemRequest request)
     {
+        var result = await _mediator.Send(request);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
         return Ok();
     }
 

@@ -9,13 +9,11 @@ namespace ProSpaceTestTask.MediatR.Register;
 public class RegisterHandler : IRequestHandler<RegisterRequest, Result>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ICustomerRepository _customerRepository;
     private readonly IService _service;
 
-    public RegisterHandler(IUserRepository userRepository, ICustomerRepository customerRepository, IService service)
+    public RegisterHandler(IUserRepository userRepository, IService service)
     {
         _userRepository = userRepository;
-        _customerRepository = customerRepository;
         _service = service;
     }
 
@@ -26,12 +24,18 @@ public class RegisterHandler : IRequestHandler<RegisterRequest, Result>
         {
             return Result.Fail("Пользователь с таким логином уже существует!");
         }
+
+        var role = await _userRepository.GetRoleByName("customer", cancellationToken);
+        if (role == null)
+        {
+            return Result.Fail("Роль не найдена!");
+        }
         
         user = new User()
         {
             Login = request.Login,
             Password = request.Password,
-            RoleId = _service.GetRoleId(),
+            Role = role,
             Customer = new Customer()
             {
                 Name = request.Name,
