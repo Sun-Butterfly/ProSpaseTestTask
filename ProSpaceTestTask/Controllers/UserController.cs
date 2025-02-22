@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.CreateUser;
+using ProSpaceTestTask.MediatR.DeleteUser;
 using ProSpaceTestTask.MediatR.RedactUser;
 
 namespace ProSpaceTestTask.Controllers;
@@ -45,8 +46,14 @@ public class UserController : Controller
     
     [HttpDelete]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> DeleteUser()
+    public async Task<IActionResult> DeleteUserById(Guid id)
     {
+        var request = new DeleteUserRequest(id);
+        var result = await _mediator.Send(request);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
         return Ok();
     }
 }

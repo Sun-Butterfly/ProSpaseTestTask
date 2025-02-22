@@ -37,8 +37,8 @@ class UserRepository : IUserRepository
     public async Task<User?> GetById(Guid id, CancellationToken cancellationToken)
     {
         return await _db.Users
-            .Include(x=>x.Role)
-            .Include(x=>x.Customer)
+            .Include(x => x.Role)
+            .Include(x => x.Customer)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
@@ -50,7 +50,7 @@ class UserRepository : IUserRepository
     public async Task ChangeRoleByRoleName(string roleName, Guid id, CancellationToken cancellationToken)
     {
         var user = await _db.Users.FirstAsync(x => x.Id == id, cancellationToken);
-        
+
         switch (roleName)
         {
             case "customer":
@@ -65,5 +65,10 @@ class UserRepository : IUserRepository
     public async Task<Role?> GetRoleByName(string roleName, CancellationToken cancellationToken)
     {
         return await _db.Roles.FirstOrDefaultAsync(x => x.Name == roleName, cancellationToken);
+    }
+
+    public async Task Delete(User user, CancellationToken cancellationToken)
+    {
+        await _db.Users.Where(x => x.Id == user.Id).ExecuteDeleteAsync(cancellationToken);
     }
 }

@@ -12,4 +12,5 @@ public interface IUserRepository
     void Update(User user);
     Task ChangeRoleByRoleName(string roleName, Guid id, CancellationToken cancellationToken);
     Task<Role?> GetRoleByName(string roleName, CancellationToken cancellationToken);
+    Task Delete(User user, CancellationToken cancellationToken);
 }
