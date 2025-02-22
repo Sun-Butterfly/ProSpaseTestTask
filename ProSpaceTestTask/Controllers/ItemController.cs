@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
+using ProSpaceTestTask.MediatR.AddItemToCart;
 using ProSpaceTestTask.MediatR.CreateItem;
 using ProSpaceTestTask.MediatR.DeleteItem;
 using ProSpaceTestTask.MediatR.GetAllItems;
@@ -26,7 +27,7 @@ public class ItemController : Controller
     {
         var request = new GetAllItemsRequest();
         var result = await _mediator.Send(request);
-        
+
         if (result.IsFailed)
         {
             return BadRequest(new ErrorModel(result.StringifyErrors()));
@@ -37,25 +38,27 @@ public class ItemController : Controller
 
     [HttpPost]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> CreateItem([FromBody]CreateItemRequest request)
+    public async Task<IActionResult> CreateItem([FromBody] CreateItemRequest request)
     {
         var result = await _mediator.Send(request);
         if (result.IsFailed)
         {
             return BadRequest(new ErrorModel(result.StringifyErrors()));
         }
+
         return Ok();
     }
 
     [HttpPut]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> RedactItem([FromBody]RedactItemRequest request)
+    public async Task<IActionResult> RedactItem([FromBody] RedactItemRequest request)
     {
         var result = await _mediator.Send(request);
         if (result.IsFailed)
         {
             return BadRequest(new ErrorModel(result.StringifyErrors()));
         }
+
         return Ok();
     }
 
@@ -65,11 +68,25 @@ public class ItemController : Controller
     {
         var request = new DeleteItemRequest(id);
         var result = await _mediator.Send(request);
-        
+
         if (result.IsFailed)
         {
             return BadRequest(new ErrorModel(result.StringifyErrors()));
         }
+
+        return Ok();
+    }
+
+    [HttpPost]
+    [Authorize(Roles = "customer")]
+    public async Task<IActionResult> AddItemToCart([FromBody] AddItemToCardRequest request)
+    {
+        var result = await _mediator.Send(request);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+
         return Ok();
     }
 }
