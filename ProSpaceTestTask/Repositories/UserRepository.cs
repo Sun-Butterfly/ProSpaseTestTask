@@ -47,21 +47,7 @@ class UserRepository : IUserRepository
         _db.Update(user);
     }
 
-    public async Task ChangeRoleByRoleName(string roleName, Guid id, CancellationToken cancellationToken)
-    {
-        var user = await _db.Users.FirstAsync(x => x.Id == id, cancellationToken);
-
-        switch (roleName)
-        {
-            case "customer":
-                user.RoleId = 2;
-                break;
-            case "administrator":
-                user.RoleId = 1;
-                break;
-        }
-    }
-
+   
     public async Task<Role?> GetRoleByName(string roleName, CancellationToken cancellationToken)
     {
         return await _db.Roles.FirstOrDefaultAsync(x => x.Name == roleName, cancellationToken);

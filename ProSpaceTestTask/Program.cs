@@ -79,6 +79,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IService, Service>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 var app = builder.Build();
 
