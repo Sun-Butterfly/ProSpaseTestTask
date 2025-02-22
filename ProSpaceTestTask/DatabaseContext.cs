@@ -13,6 +13,9 @@ public class DatabaseContext : DbContext
     public DbSet<OrderElement> OrderElements { get; set; } = null!;
     public DbSet<Item> Items { get; set; } = null!;
 
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
     }
@@ -43,12 +46,6 @@ public class DatabaseContext : DbContext
                 }
             });
 
-        // modelBuilder.Entity<Customer>()
-        //     .HasOne(x => x.User)
-        //     .WithOne(y => y.Customer)
-        //     .HasForeignKey<Customer>(z => z.UserId)
-        //     .HasPrincipalKey<User>(z=>z.CustomerId);
-
         modelBuilder.Entity<Customer>()
             .HasKey(x => x.Id);
 
@@ -71,5 +68,23 @@ public class DatabaseContext : DbContext
             .HasOne(x => x.Item)
             .WithMany(y => y.OrderElements)
             .HasForeignKey(z => z.ItemId);
+
+        modelBuilder.Entity<Cart>()
+            .HasKey(x => x.Id);
+        
+        modelBuilder.Entity<Cart>()
+            .HasOne(x => x.Customer)
+            .WithOne(x => x.Cart)
+            .HasForeignKey<Cart>(x => x.Id);
+
+        modelBuilder.Entity<CartItem>()
+            .HasOne(x => x.Cart)
+            .WithMany(x => x.CartItems)
+            .HasForeignKey(x => x.CartId);
+
+        modelBuilder.Entity<CartItem>()
+            .HasOne(x => x.Item)
+            .WithMany(x => x.CartItems)
+            .HasForeignKey(x => x.ItemId);
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProSpaceTestTask;
@@ -11,9 +12,11 @@ using ProSpaceTestTask;
 namespace ProSpaceTestTask.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250222124649_addCart")]
+    partial class addCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +28,7 @@ namespace ProSpaceTestTask.Migrations
             modelBuilder.Entity("ProSpaceTestTask.Models.Cart", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -218,17 +222,6 @@ namespace ProSpaceTestTask.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ProSpaceTestTask.Models.Cart", b =>
-                {
-                    b.HasOne("ProSpaceTestTask.Models.Customer", "Customer")
-                        .WithOne("Cart")
-                        .HasForeignKey("ProSpaceTestTask.Models.Cart", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("ProSpaceTestTask.Models.CartItem", b =>
                 {
                     b.HasOne("ProSpaceTestTask.Models.Cart", "Cart")
@@ -238,7 +231,7 @@ namespace ProSpaceTestTask.Migrations
                         .IsRequired();
 
                     b.HasOne("ProSpaceTestTask.Models.Item", "Item")
-                        .WithMany("CartItems")
+                        .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -250,11 +243,19 @@ namespace ProSpaceTestTask.Migrations
 
             modelBuilder.Entity("ProSpaceTestTask.Models.Customer", b =>
                 {
+                    b.HasOne("ProSpaceTestTask.Models.Cart", "Cart")
+                        .WithOne("Customer")
+                        .HasForeignKey("ProSpaceTestTask.Models.Customer", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ProSpaceTestTask.Models.User", "User")
                         .WithOne("Customer")
                         .HasForeignKey("ProSpaceTestTask.Models.Customer", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Cart");
 
                     b.Navigation("User");
                 });
@@ -303,20 +304,18 @@ namespace ProSpaceTestTask.Migrations
             modelBuilder.Entity("ProSpaceTestTask.Models.Cart", b =>
                 {
                     b.Navigation("CartItems");
+
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ProSpaceTestTask.Models.Customer", b =>
                 {
-                    b.Navigation("Cart")
-                        .IsRequired();
-
                     b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("ProSpaceTestTask.Models.Item", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("OrderElements");
                 });
 

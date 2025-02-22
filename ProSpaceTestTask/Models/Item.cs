@@ -9,4 +9,5 @@ public class Item
     public string Category { get; set; } = "";
 
     public List<OrderElement> OrderElements { get; set; } = new();
+    public List<CartItem> CartItems { get; set; } = new();
 }

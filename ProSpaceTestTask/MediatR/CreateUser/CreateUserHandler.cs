@@ -39,7 +39,8 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result>
                 Name = request.Name,
                 Address = request.Address,
                 Code = _service.GenerateCustomerCode(),
-                Discount = request.Discount
+                Discount = request.Discount,
+                Cart = new Cart()
             }
         };
         _userRepository.Add(user);

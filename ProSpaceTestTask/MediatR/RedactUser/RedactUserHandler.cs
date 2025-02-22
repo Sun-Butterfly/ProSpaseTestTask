@@ -62,7 +62,8 @@ public class RedactUserHandler : IRequestHandler<RedactUserRequest, Result>
             Name = request.Name,
             Address = request.Address,
             Code = request.Code,
-            Discount = request.Discount
+            Discount = request.Discount,
+            Cart = new Cart()
         };
         customer.Name = request.Name;
         customer.Address = request.Address;

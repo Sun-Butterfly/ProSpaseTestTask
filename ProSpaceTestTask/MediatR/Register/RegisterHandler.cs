@@ -40,7 +40,8 @@ public class RegisterHandler : IRequestHandler<RegisterRequest, Result>
             {
                 Name = request.Name,
                 Address = request.Address,
-                Code = _service.GenerateCustomerCode()
+                Code = _service.GenerateCustomerCode(),
+                Cart = new Cart()
             }
         };
         _userRepository.Add(user);

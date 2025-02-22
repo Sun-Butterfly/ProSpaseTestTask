@@ -11,4 +11,6 @@ public class Customer
     public User? User { get; set; }
 
     public List<Order> Orders { get; set; } = new();
+
+    public Cart Cart { get; set; } = null!;
 }
