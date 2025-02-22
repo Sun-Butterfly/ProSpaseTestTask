@@ -9,6 +9,6 @@ public interface IItemRepository
     Task SaveChanges(CancellationToken cancellationToken);
     void Update(Item item);
     Task<List<GetAllItemsDto>> GetAll(CancellationToken cancellationToken);
-
     Task<Item?> GetById(Guid id, CancellationToken cancellationToken);
+    Task Delete(Item item, CancellationToken cancellationToken);
 }

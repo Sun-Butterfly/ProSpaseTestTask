@@ -44,4 +44,11 @@ class ItemRepository : IItemRepository
     {
         return await _db.Items.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
+
+    public async Task Delete(Item item, CancellationToken cancellationToken)
+    {
+        await _db.Items
+            .Where(x => x.Id == item.Id)
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }

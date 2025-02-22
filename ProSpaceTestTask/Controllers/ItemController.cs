@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.CreateItem;
+using ProSpaceTestTask.MediatR.DeleteItem;
 using ProSpaceTestTask.MediatR.GetAllItems;
 using ProSpaceTestTask.MediatR.RedactItem;
 
@@ -60,8 +61,15 @@ public class ItemController : Controller
 
     [HttpDelete]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> DeleteItem()
+    public async Task<IActionResult> DeleteItem(Guid id)
     {
+        var request = new DeleteItemRequest(id);
+        var result = await _mediator.Send(request);
+        
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
         return Ok();
     }
 }
