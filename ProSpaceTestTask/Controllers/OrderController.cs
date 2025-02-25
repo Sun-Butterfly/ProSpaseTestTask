@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
+using ProSpaceTestTask.MediatR.AcceptOrder;
 using ProSpaceTestTask.MediatR.CreateOrder;
 
 namespace ProSpaceTestTask.Controllers;
@@ -20,6 +21,19 @@ public class OrderController : Controller
     [HttpPost]
     [Authorize(Roles = "customer")]
     public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
+    {
+        var result = await _mediator.Send(request);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+
+        return Ok();
+    }
+
+    [HttpPut]
+    [Authorize(Roles = "administrator")]
+    public async Task<IActionResult> AcceptOrder([FromBody] AcceptOrderRequest request)
     {
         var result = await _mediator.Send(request);
         if (result.IsFailed)

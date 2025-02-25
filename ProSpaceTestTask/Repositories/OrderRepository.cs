@@ -22,4 +22,14 @@ class OrderRepository : IOrderRepository
     {
         await _db.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<Order?> GetById(Guid orderId, CancellationToken cancellationToken)
+    {
+        return await _db.Orders.FirstOrDefaultAsync(x => x.Id == orderId, cancellationToken);
+    }
+
+    public void Update(Order order)
+    {
+        _db.Update(order);
+    }
 }
