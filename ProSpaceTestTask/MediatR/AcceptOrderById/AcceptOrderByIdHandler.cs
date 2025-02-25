@@ -3,26 +3,26 @@ using MediatR;
 using ProSpaceTestTask.Models;
 using ProSpaceTestTask.Repositories;
 
-namespace ProSpaceTestTask.MediatR.AcceptOrder;
+namespace ProSpaceTestTask.MediatR.AcceptOrderById;
 
-public class AcceptOrderHandler : IRequestHandler<AcceptOrderRequest, Result>
+public class AcceptOrderByIdHandler : IRequestHandler<AcceptOrderByIdRequest, Result>
 {
     private readonly IOrderRepository _orderRepository;
 
-    public AcceptOrderHandler(IOrderRepository orderRepository)
+    public AcceptOrderByIdHandler(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
 
-    public async Task<Result> Handle(AcceptOrderRequest request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(AcceptOrderByIdRequest byIdRequest, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetById(request.OrderId, cancellationToken);
+        var order = await _orderRepository.GetById(byIdRequest.OrderId, cancellationToken);
         if (order == null)
         {
             return Result.Fail("Заказ не найден!");
         }
 
-        order.ShipmentDate = request.ShipmentDate;
+        order.ShipmentDate = byIdRequest.ShipmentDate;
         order.Status = OrderStatus.Processing.ToString();
         
         _orderRepository.Update(order);

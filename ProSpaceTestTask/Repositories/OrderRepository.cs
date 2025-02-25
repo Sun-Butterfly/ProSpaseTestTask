@@ -32,4 +32,9 @@ class OrderRepository : IOrderRepository
     {
         _db.Update(order);
     }
+
+    public async Task Delete(Order order, CancellationToken cancellationToken)
+    {
+        await _db.Orders.Where(x => x.Id == order.Id).ExecuteDeleteAsync(cancellationToken);
+    }
 }

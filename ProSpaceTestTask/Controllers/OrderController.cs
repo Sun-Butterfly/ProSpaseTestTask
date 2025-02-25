@@ -2,8 +2,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
-using ProSpaceTestTask.MediatR.AcceptOrder;
+using ProSpaceTestTask.MediatR.AcceptOrderById;
 using ProSpaceTestTask.MediatR.CreateOrder;
+using ProSpaceTestTask.MediatR.DeleteOrderById;
 
 namespace ProSpaceTestTask.Controllers;
 
@@ -33,9 +34,23 @@ public class OrderController : Controller
 
     [HttpPut]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> AcceptOrder([FromBody] AcceptOrderRequest request)
+    public async Task<IActionResult> AcceptOrderById([FromBody] AcceptOrderByIdRequest byIdRequest)
+    {
+        var result = await _mediator.Send(byIdRequest);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+
+        return Ok();
+    }
+
+    [HttpDelete]
+    [Authorize(Roles = "customer")]
+    public async Task<IActionResult> DeleteOrderById([FromBody] DeleteOrderByIdRequest request)
     {
         var result = await _mediator.Send(request);
+        
         if (result.IsFailed)
         {
             return BadRequest(new ErrorModel(result.StringifyErrors()));
