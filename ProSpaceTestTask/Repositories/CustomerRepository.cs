@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ProSpaceTestTask.Models;
 
 namespace ProSpaceTestTask.Repositories;
@@ -24,5 +25,11 @@ class CustomerRepository : ICustomerRepository
     public void Delete(Customer customer)
     {
         _db.Remove(customer);
+    }
+
+    public async Task<Customer?> GetById(Guid customerId, CancellationToken cancellationToken)
+    {
+        return await _db.Customers.Include(x=>x.Cart).Include(x=>x.Orders)
+            .FirstOrDefaultAsync(x => x.Id == customerId, cancellationToken);
     }
 }

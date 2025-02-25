@@ -8,4 +8,6 @@ public interface ICartRepository
     Task<Cart?> GetByCustomerId(Guid customerId, CancellationToken cancellationToken);
     void Add(CartItem cartItem);
     Task SaveChanges(CancellationToken cancellationToken);
+    Task<List<CartItem>?> GetCartItemsByIds(List<long> selectedCartItemIds, CancellationToken cancellationToken);
+    void RemoveCartItems(List<CartItem> selectedCartItems);
 }

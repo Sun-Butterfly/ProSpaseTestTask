@@ -33,4 +33,18 @@ class CartRepository : ICartRepository
     {
         await _db.SaveChangesAsync(cancellationToken);
     }
+    
+    public async Task<List<CartItem>?> GetCartItemsByIds(List<long> selectedCartItemIds,
+        CancellationToken cancellationToken)
+    {
+        var items = await _db.CartItems.Include(x=>x.Item)
+            .Where(x => selectedCartItemIds.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+        return items;
+    }
+
+    public void RemoveCartItems(List<CartItem> selectedCartItems)
+    {
+        foreach (var selectedCartItem in selectedCartItems) _db.CartItems.Remove(selectedCartItem);
+    }
 }
