@@ -7,9 +7,9 @@ export default {
   name: 'LoginPage',
   data(){
     return {
-      login: '',
-      password: '',
-      errorMessage: '',
+      login: null,
+      password: null,
+      errorMessage: null,
     };
   },
   methods:{
@@ -31,6 +31,7 @@ export default {
         }
       } catch (error){
         this.errorMessage = error.response.data.message
+        alert(this.errorMessage)
       }
       
     },
@@ -47,8 +48,8 @@ export default {
     <input type="text" placeholder="Логин" v-model="login" />
     <input type="password" placeholder="Пароль" v-model="password" />
     <button type="submit">Войти</button>
-    <button class="register" v-on:click="goToRegister()">Регистрация</button>
   </form>
+  <button class="register" v-on:click="goToRegister()">Регистрация</button>
 </template>
 
 <style scoped>

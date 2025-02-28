@@ -26,7 +26,7 @@ export default {
     <button class="login" v-on:click="goToLogin()">Войти</button>
   </div>
   <div class="autorize" v-if="isAuthorize()">
-    <button class="logout" v-on:click="goToLogout()">Выйти</button>
+    
   </div>
 </template>
 
