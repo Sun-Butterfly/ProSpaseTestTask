@@ -88,7 +88,7 @@ var app = builder.Build();
 app.UseRouting();
 
 app.UseCors(policyBuilder => policyBuilder
-    .WithOrigins("http://localhost:4200") //Todo: поменять хост когда начну фронт
+    .WithOrigins("http://localhost:8080")
     .AllowAnyMethod()
     .AllowAnyHeader()
     .AllowCredentials()
