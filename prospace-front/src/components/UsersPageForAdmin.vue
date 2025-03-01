@@ -21,7 +21,7 @@ export default {
         const response = await apiClient.get('/User/GetAllUsers');
         this.users = response.data;
       } catch (error) {
-        this.errorMessage = this.users.errorMessage
+        this.errorMessage = error.response.data.message
       }
     },
 
@@ -41,7 +41,7 @@ export default {
     //   let selectedUserId = this.users[i].Id
     // },
     goToCreateUser() {
-
+      this.$router.push({name: 'Create_user'})
     },
 
   }

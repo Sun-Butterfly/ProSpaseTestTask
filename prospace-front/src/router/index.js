@@ -7,6 +7,7 @@ import RegisterPage from "@/components/RegisterPage.vue";
 import UsersPageForAdmin from "@/components/UsersPageForAdmin.vue";
 import ItemsPageForAdmin from "@/components/ItemsPageForAdmin.vue";
 import RedactUserPage from "@/components/RedactUserPage.vue";
+import CreateUserPage from "@/components/CreateUserPage.vue";
 
 
 const routes = [
@@ -49,6 +50,11 @@ const routes = [
         path: '/redact_user',
         name: 'Redact_user',
         component: RedactUserPage,
+    },
+    {
+        path: '/create_user',
+        name: 'Create_user',
+        component: CreateUserPage,
     },
     {
         path: '/**',
