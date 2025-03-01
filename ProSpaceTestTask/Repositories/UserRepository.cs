@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.Models;
 
 namespace ProSpaceTestTask.Repositories;
@@ -56,5 +57,20 @@ class UserRepository : IUserRepository
     public async Task Delete(User user, CancellationToken cancellationToken)
     {
         await _db.Users.Where(x => x.Id == user.Id).ExecuteDeleteAsync(cancellationToken);
+    }
+
+    public async Task<List<GetAllUsersDto>> GetAll(CancellationToken cancellationToken)
+    {
+        return await _db.Users
+            .Include(x=>x.Role)
+            .Include(x=>x.Customer)
+            .Select(x => new GetAllUsersDto(
+                x.Id,
+                x.Role.Name,
+                x.Customer.Name,
+                x.Customer.Code,
+                x.Customer.Address,
+                x.Customer.Discount))
+            .ToListAsync(cancellationToken);
     }
 }

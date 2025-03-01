@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.CreateUser;
 using ProSpaceTestTask.MediatR.DeleteUser;
+using ProSpaceTestTask.MediatR.GetAllUsers;
 using ProSpaceTestTask.MediatR.RedactUser;
 
 namespace ProSpaceTestTask.Controllers;
@@ -55,5 +56,19 @@ public class UserController : Controller
             return BadRequest(new ErrorModel(result.StringifyErrors()));
         }
         return Ok();
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "administrator")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var request = new GetAllUsersRequest();
+        var result = await _mediator.Send(request);
+        
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+        return Ok(result.Value.Users);
     }
 }
