@@ -15,7 +15,8 @@ public class DeleteItemHandler : IRequestHandler<DeleteItemRequest, Result>
 
     public async Task<Result> Handle(DeleteItemRequest request, CancellationToken cancellationToken)
     {
-        var item = await _itemRepository.GetById(request.Id, cancellationToken);
+        var idGuid = Guid.Parse(request.Id);
+        var item = await _itemRepository.GetById(idGuid, cancellationToken);
         if (item == null)
         {
             return Result.Fail("Товар не найден!");

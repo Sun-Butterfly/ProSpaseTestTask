@@ -3,4 +3,4 @@ using MediatR;
 
 namespace ProSpaceTestTask.MediatR.DeleteUser;
 
-public record DeleteUserRequest(Guid Id) : IRequest<Result>;
+public record DeleteUserRequest(string Id) : IRequest<Result>;

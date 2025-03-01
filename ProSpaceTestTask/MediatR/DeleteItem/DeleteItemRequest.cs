@@ -3,4 +3,4 @@ using MediatR;
 
 namespace ProSpaceTestTask.MediatR.DeleteItem;
 
-public record DeleteItemRequest(Guid Id) : IRequest<Result>;
+public record DeleteItemRequest(string Id) : IRequest<Result>;

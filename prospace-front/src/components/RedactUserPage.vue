@@ -33,12 +33,13 @@ export default {
     async saveUser(){
       try{
         await apiClient.put(`/User/RedactUser`, {id: this.userId, ...this.user})
+        alert("Готово!")
+        this.$router.push({name:'Users_adm'})
       } catch (error){
         this.errorMessage = error.response.data.message
         alert(this.errorMessage)
       }
-      alert("Готово!")
-      this.$router.push({name:'Users_adm'})
+      
     },
     goToCancel(){
       this.$router.push({name:'Users_adm'})

@@ -15,7 +15,8 @@ public class DeleteUserHandler : IRequestHandler<DeleteUserRequest, Result>
 
     public async Task<Result> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetById(request.Id, cancellationToken);
+        var idGuid = Guid.Parse(request.Id);
+        var user = await _userRepository.GetById(idGuid, cancellationToken);
         if (user == null)
         {
             return Result.Fail("Пользователь не найден!");

@@ -37,12 +37,16 @@ export default {
       this.$router.push({name: 'Redact_user', query: {id: selectedUserId}})
 
     },
-    // goToDeleteUser(i){
-    //   let selectedUserId = this.users[i].Id
-    // },
+    goToDeleteUser(i) {
+      let selectedUserId = this.users[i].id
+      this.$router.push({name: 'Delete_user', query: {id: selectedUserId}})
+    },
     goToCreateUser() {
       this.$router.push({name: 'Create_user'})
     },
+    goToHome(){
+      this.$router.push({name: 'Admin'})
+    }
 
   }
 }
@@ -73,12 +77,13 @@ export default {
         <td>{{ user.discount }}</td>
         <td>
           <button class="buttonRedact" @click.stop="goToRedactUser(i)">Редактировать</button>
-          <!--          <button class="buttonDelete" @click.stop="goToDeleteUser(i)">Удалить</button>-->
+          <button class="buttonDelete" @click.stop="goToDeleteUser(i)">Удалить</button>
         </td>
       </tr>
       </tbody>
     </table>
     <button class="buttonCreate" v-on:click="goToCreateUser()">Добавить пользователя</button>
+    <button class="buttonHome" v-on:click="goToHome()">На главную</button>
   </div>
 </template>
 

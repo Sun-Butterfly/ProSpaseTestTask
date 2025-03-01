@@ -48,7 +48,7 @@ public class UserController : Controller
     
     [HttpDelete]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> DeleteUserById(Guid id)
+    public async Task<IActionResult> DeleteUserById([FromQuery]string id)
     {
         var request = new DeleteUserRequest(id);
         var result = await _mediator.Send(request);

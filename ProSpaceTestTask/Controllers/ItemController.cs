@@ -65,7 +65,7 @@ public class ItemController : Controller
 
     [HttpDelete]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> DeleteItem(Guid id)
+    public async Task<IActionResult> DeleteItem([FromQuery]string id)
     {
         var request = new DeleteItemRequest(id);
         var result = await _mediator.Send(request);
