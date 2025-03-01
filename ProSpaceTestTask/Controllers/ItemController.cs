@@ -6,6 +6,7 @@ using ProSpaceTestTask.MediatR.AddItemToCart;
 using ProSpaceTestTask.MediatR.CreateItem;
 using ProSpaceTestTask.MediatR.DeleteItem;
 using ProSpaceTestTask.MediatR.GetAllItems;
+using ProSpaceTestTask.MediatR.GetItemById;
 using ProSpaceTestTask.MediatR.RedactItem;
 
 namespace ProSpaceTestTask.Controllers;
@@ -88,5 +89,20 @@ public class ItemController : Controller
         }
 
         return Ok();
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "administrator")]
+    public async Task<IActionResult> GetById([FromQuery]string id)
+    {
+        var request = new GetItemByIdRequest(id);
+        var result = await _mediator.Send(request);
+        
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+
+        return Ok(result.Value.Item);
     }
 }

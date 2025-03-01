@@ -51,4 +51,14 @@ class ItemRepository : IItemRepository
             .Where(x => x.Id == item.Id)
             .ExecuteDeleteAsync(cancellationToken);
     }
+
+    public async Task<GetItemByIdDto> GetByIdDto(Guid idGuid, CancellationToken cancellationToken)
+    {
+        var item = await _db.Items.FirstOrDefaultAsync(x => x.Id == idGuid, cancellationToken);
+        return new GetItemByIdDto(
+            item.Name,
+            item.Price,
+            item.Code
+        );
+    }
 }

@@ -11,4 +11,5 @@ public interface IItemRepository
     Task<List<GetAllItemsDto>> GetAll(CancellationToken cancellationToken);
     Task<Item?> GetById(Guid id, CancellationToken cancellationToken);
     Task Delete(Item item, CancellationToken cancellationToken);
+    Task<GetItemByIdDto> GetByIdDto(Guid idGuid, CancellationToken cancellationToken);
 }
