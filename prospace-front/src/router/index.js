@@ -4,6 +4,8 @@ import AdminPage from "@/components/AdminPage.vue";
 import CustomerPage from "@/components/CuspomerPage.vue";
 import LoginPage from "@/components/LoginPage.vue";
 import RegisterPage from "@/components/RegisterPage.vue";
+import UsersPageForAdmin from "@/components/UsersPageForAdmin.vue";
+import ItemsPageForAdmin from "@/components/ItemsPageForAdmin.vue";
 
 
 const routes = [
@@ -31,6 +33,16 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: RegisterPage,
+    },
+    {
+        path: '/users_adm',
+        name: 'Users_adm',
+        component: UsersPageForAdmin,
+    },
+    {
+        path: '/items_adm',
+        name: 'Items_adm',
+        component: ItemsPageForAdmin,
     },
     {
         path: '/**',

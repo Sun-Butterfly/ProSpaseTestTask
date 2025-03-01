@@ -28,7 +28,7 @@ apiClient.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             TokenService.removeToken();
-            router.push({ name: 'login' });
+            router.push({ name: 'Login' });
         }
         return Promise.reject(error);
     }

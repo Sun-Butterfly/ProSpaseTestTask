@@ -37,7 +37,10 @@ class TokenService{
         return id;
     }
 
-    
+
+    static removeToken() {
+        localStorage.removeItem('authToken');
+    }
 }
 
 export default TokenService
