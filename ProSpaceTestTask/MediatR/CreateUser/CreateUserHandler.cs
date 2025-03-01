@@ -29,20 +29,33 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, Result>
         {
             return Result.Fail("Роль не найдена!");
         }
-        user = new User()
+
+        user = role.Name switch
         {
-            Login = request.Login,
-            Password = request.Password,
-            Role = role,
-            Customer = new Customer()
+            "administrator" => new User()
             {
-                Name = request.Name,
-                Address = request.Address,
-                Code = _service.GenerateCustomerCode(),
-                Discount = request.Discount,
-                Cart = new Cart()
-            }
+                Login = request.Login, 
+                Password = request.Password, 
+                Role = role, 
+                Customer = null
+            },
+            "customer" => new User()
+            {
+                Login = request.Login,
+                Password = request.Password,
+                Role = role,
+                Customer = new Customer()
+                {
+                    Name = request.Name,
+                    Address = request.Address,
+                    Code = _service.GenerateCustomerCode(),
+                    Discount = request.Discount,
+                    Cart = new Cart()
+                }
+            },
+            _ => user
         };
+
         _userRepository.Add(user);
         await _userRepository.SaveChanges(cancellationToken);
         return Result.Ok();
