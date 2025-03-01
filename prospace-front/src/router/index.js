@@ -8,6 +8,8 @@ import UsersPageForAdmin from "@/components/UsersPageForAdmin.vue";
 import ItemsPageForAdmin from "@/components/ItemsPageForAdmin.vue";
 import RedactUserPage from "@/components/RedactUserPage.vue";
 import CreateUserPage from "@/components/CreateUserPage.vue";
+import RedactItemPage from "@/components/RedactItemPage.vue";
+import CreateItemPage from "@/components/CreateItemPage.vue";
 
 
 const routes = [
@@ -55,6 +57,16 @@ const routes = [
         path: '/create_user',
         name: 'Create_user',
         component: CreateUserPage,
+    },
+    {
+        path: '/redact_item',
+        name: 'Redact_item',
+        component: RedactItemPage,
+    },
+    {
+        path: '/create_item',
+        name: 'Create_item',
+        component: CreateItemPage,
     },
     {
         path: '/**',

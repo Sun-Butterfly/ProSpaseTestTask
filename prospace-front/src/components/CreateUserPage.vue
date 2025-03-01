@@ -54,7 +54,7 @@ export default {
       <input type="text" placeholder="Адрес" v-model="user.address"/>
       <input type="text" placeholder="Скидка" v-model="user.discount"/>
     </div>
-    <button type="submit">Сохранить</button>
+    <button type="submit">Создать</button>
   </form>
   <button v-on:click="goToCancel()">Отмена</button>
 </template>
