@@ -75,7 +75,7 @@ public class UserController : Controller
 
     [HttpGet]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> GetUserById(Guid id)
+    public async Task<IActionResult> GetUserById([FromQuery]string id)
     {
         var request = new GetUserByIdRequest(id);
         var result = await _mediator.Send(request);

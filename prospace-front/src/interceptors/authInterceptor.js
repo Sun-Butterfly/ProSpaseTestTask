@@ -1,6 +1,6 @@
 import axios from "axios";
 import TokenService from '@/services/TokenService';
-import router from "@/main";
+import router from "@/router";
 
 const apiClient = axios.create({
     baseURL: 'http://localhost:5284',

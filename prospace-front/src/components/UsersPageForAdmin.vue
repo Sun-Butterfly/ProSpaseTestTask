@@ -3,39 +3,47 @@
 import apiClient from "@/interceptors/authInterceptor";
 
 export default {
-  data(){
+
+  data() {
     return {
       users: [],
       activeUserIndex: -1,
       errorMessage: null,
+
     };
   },
   mounted() {
     this.fetchUsers();
   },
-  methods:{
-    async fetchUsers(){
+  methods: {
+    async fetchUsers() {
       try {
         const response = await apiClient.get('/User/GetAllUsers');
         this.users = response.data;
-        console.log('Ответ от сервера:', response.data);
-      } catch (error){
+      } catch (error) {
         this.errorMessage = this.users.errorMessage
       }
     },
-    setActiveUserIndex(i){
+
+    setActiveUserIndex(i) {
       if (this.activeUserIndex === i) {
         this.activeUserIndex = -1;
       } else {
         this.activeUserIndex = i;
       }
     },
-    goToRedactUser(i){
-      let selectedUserId = this.users[i].Id
+    goToRedactUser(i) {
+      let selectedUserId = this.users[i].id
+      this.$router.push({name: 'Redact_user', query: {id: selectedUserId}})
+
     },
-    goToDeleteUser(i){
-      let selectedUserId = this.users[i].Id
-    }
+    // goToDeleteUser(i){
+    //   let selectedUserId = this.users[i].Id
+    // },
+    goToCreateUser() {
+
+    },
+
   }
 }
 </script>
@@ -55,21 +63,22 @@ export default {
         <th></th>
       </tr>
       <tr v-for="(user, i) in users"
-          :key="user.Id" 
+          :key="user.id"
           @click="setActiveUserIndex(i)">
-        <td>{{user.id}}</td>
-        <td>{{user.roleName}}</td>
-        <td>{{user.name}}</td>
-        <td>{{user.code}}</td>
-        <td>{{user.address}}</td>
-        <td>{{user.discount}}</td>
+        <td>{{ user.id }}</td>
+        <td>{{ user.roleName }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.code }}</td>
+        <td>{{ user.address }}</td>
+        <td>{{ user.discount }}</td>
         <td>
           <button class="buttonRedact" @click.stop="goToRedactUser(i)">Редактировать</button>
-          <button class="buttonDelete" @click.stop="goToDeleteUser(i)">Удалить</button>
+          <!--          <button class="buttonDelete" @click.stop="goToDeleteUser(i)">Удалить</button>-->
         </td>
       </tr>
       </tbody>
     </table>
+    <button class="buttonCreate" v-on:click="goToCreateUser()">Добавить пользователя</button>
   </div>
 </template>
 

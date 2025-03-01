@@ -84,10 +84,10 @@ class UserRepository : IUserRepository
             user.Login,
             user.Password,
             user.Role.Name,
-            user.Customer.Name,
-            user.Customer.Address,
-            user.Customer.Code,
-            user.Customer.Discount
+            user.Customer?.Name,
+            user.Customer?.Address,
+            user.Customer?.Code,
+            user.Customer?.Discount
         );
     }
 }
