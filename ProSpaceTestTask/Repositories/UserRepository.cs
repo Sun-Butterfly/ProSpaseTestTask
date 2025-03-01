@@ -48,7 +48,7 @@ class UserRepository : IUserRepository
         _db.Update(user);
     }
 
-   
+
     public async Task<Role?> GetRoleByName(string roleName, CancellationToken cancellationToken)
     {
         return await _db.Roles.FirstOrDefaultAsync(x => x.Name == roleName, cancellationToken);
@@ -62,8 +62,8 @@ class UserRepository : IUserRepository
     public async Task<List<GetAllUsersDto>> GetAll(CancellationToken cancellationToken)
     {
         return await _db.Users
-            .Include(x=>x.Role)
-            .Include(x=>x.Customer)
+            .Include(x => x.Role)
+            .Include(x => x.Customer)
             .Select(x => new GetAllUsersDto(
                 x.Id,
                 x.Role.Name,
@@ -72,5 +72,22 @@ class UserRepository : IUserRepository
                 x.Customer.Address,
                 x.Customer.Discount))
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<GetUserByIdDto> GetByIdDto(Guid id, CancellationToken cancellationToken)
+    {
+        var user = await _db.Users
+            .Include(x => x.Role)
+            .Include(x => x.Customer)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        return new GetUserByIdDto(
+            user.Login,
+            user.Password,
+            user.Role.Name,
+            user.Customer.Name,
+            user.Customer.Address,
+            user.Customer.Code,
+            user.Customer.Discount
+        );
     }
 }

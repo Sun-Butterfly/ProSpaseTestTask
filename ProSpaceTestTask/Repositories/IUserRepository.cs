@@ -14,4 +14,5 @@ public interface IUserRepository
     Task<Role?> GetRoleByName(string roleName, CancellationToken cancellationToken);
     Task Delete(User user, CancellationToken cancellationToken);
     Task<List<GetAllUsersDto>> GetAll(CancellationToken cancellationToken);
+    Task<GetUserByIdDto> GetByIdDto(Guid id, CancellationToken cancellationToken);
 }

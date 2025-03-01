@@ -5,6 +5,7 @@ using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.CreateUser;
 using ProSpaceTestTask.MediatR.DeleteUser;
 using ProSpaceTestTask.MediatR.GetAllUsers;
+using ProSpaceTestTask.MediatR.GetUserById;
 using ProSpaceTestTask.MediatR.RedactUser;
 
 namespace ProSpaceTestTask.Controllers;
@@ -70,5 +71,18 @@ public class UserController : Controller
             return BadRequest(new ErrorModel(result.StringifyErrors()));
         }
         return Ok(result.Value.Users);
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "administrator")]
+    public async Task<IActionResult> GetUserById(Guid id)
+    {
+        var request = new GetUserByIdRequest(id);
+        var result = await _mediator.Send(request);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+        return Ok(result.Value.User);
     }
 }
