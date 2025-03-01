@@ -58,7 +58,7 @@ class ItemRepository : IItemRepository
         return new GetItemByIdDto(
             item.Name,
             item.Price,
-            item.Code
+            item.Category
         );
     }
 }
