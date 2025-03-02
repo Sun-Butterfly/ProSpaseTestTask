@@ -21,9 +21,9 @@ public class DeleteCartItemByCartItemIdHandler : IRequestHandler<DeleteCartItemB
             return Result.Fail("Элемент корзины не найден!");
         }
 
-        if (request.Count < cartItem.ItemsCount)
+        if (request.Count > cartItem.ItemsCount)
         {
-            cartItem.ItemsCount -= request.Count;
+            return Result.Fail("Нельзя удалить больше, чем есть в корзине!");
         }
 
         if (cartItem.ItemsCount == request.Count)
@@ -31,10 +31,12 @@ public class DeleteCartItemByCartItemIdHandler : IRequestHandler<DeleteCartItemB
             await _cartRepository.DeleteCartItem(cartItem, cancellationToken);
         }
 
-        if (request.Count > cartItem.ItemsCount)
+        else
         {
-            return Result.Fail("Нельзя удалить больше, чем есть в корзине!");
+            cartItem.ItemsCount -= request.Count;
+            _cartRepository.Update(cartItem);
         }
+
 
         await _cartRepository.SaveChanges(cancellationToken);
         return Result.Ok();

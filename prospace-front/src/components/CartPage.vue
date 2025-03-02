@@ -57,16 +57,9 @@ export default {
     async removeCartItems(i) {
       const cartItem = this.cartItems[i]
       const countToRemove = this.countsToRemove[i]
-
-      if (countToRemove > cartItem.itemsCount) {
-        alert('Нельзя удалить больше, чем есть в корзине!')
-        return;
-      }
-
       try {
         await apiClient.delete(`/Cart/DeleteCartItemByCartItemId?cartItemId=${cartItem.id}&count=${countToRemove}`)
-
-
+        
         cartItem.itemsCount -= countToRemove
 
         if (cartItem.itemsCount === 0) {

@@ -75,4 +75,9 @@ class CartRepository : ICartRepository
     {
         await _db.CartItems. Where(x=>x.Id == cartItem.Id).ExecuteDeleteAsync(cancellationToken);
     }
+
+    public void Update(CartItem cartItem)
+    {
+        _db.CartItems.Update(cartItem);
+    }
 }

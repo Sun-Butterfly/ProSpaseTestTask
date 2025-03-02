@@ -14,4 +14,5 @@ public interface ICartRepository
     Task<List<GetCartItemByCartIdDto>> GetCartItemsByCartId(Guid cartId, CancellationToken cancellationToken);
     Task<CartItem?> GetCartItemByCartItemId(long cartItemId, CancellationToken cancellationToken);
     Task DeleteCartItem(CartItem cartItem, CancellationToken cancellationToken);
+    void Update(CartItem cartItem);
 }
