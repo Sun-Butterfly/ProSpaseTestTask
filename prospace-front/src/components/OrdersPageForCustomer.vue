@@ -7,12 +7,20 @@ export default {
     return {
       orders: [],
       activeOrderIndex: -1,
-      errorMessage: ''
+      errorMessage: '',
+      selectedStatus: '',
+      statusOptions: ['New', 'Processing', 'Completed'],
     }
   },
   computed: {
     expandedOrders() {
       return this.orders.filter(order => order.isExpanded);
+    },
+    filteredOrders() {
+      if (!this.selectedStatus) {
+        return this.orders;
+      }
+      return this.orders.filter(order => order.status === this.selectedStatus);
     }
   },
 
@@ -57,6 +65,15 @@ export default {
 <template>
   <div class="orders">
     <h1>Заказы</h1>
+    <div class="filter">
+      <label for="statusFilter">Фильтр по статусу:</label>
+      <select id="statusFilter" v-model="selectedStatus">
+        <option value="">Все</option>
+        <option v-for="status in statusOptions" :key="status" :value="status">
+          {{ status }}
+        </option>
+      </select>
+    </div>
     <table>
       <thead>
       <tr>
@@ -68,7 +85,7 @@ export default {
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(order, i) in orders"
+      <tr v-for="(order, i) in filteredOrders"
           :key="order.id"
           @click="setActiveOrderIndex(i)">
         <td>{{ order.orderNumber }}</td>
