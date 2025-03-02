@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.AcceptOrderById;
+using ProSpaceTestTask.MediatR.CloseOrderById;
 using ProSpaceTestTask.MediatR.CreateOrder;
 using ProSpaceTestTask.MediatR.DeleteOrderById;
 using ProSpaceTestTask.MediatR.GetAllOrders;
@@ -36,9 +37,9 @@ public class OrderController : Controller
 
     [HttpPut]
     [Authorize(Roles = "administrator")]
-    public async Task<IActionResult> AcceptOrderById([FromBody] AcceptOrderByIdRequest byIdRequest)
+    public async Task<IActionResult> AcceptOrderById([FromBody] AcceptOrderByIdRequest request)
     {
-        var result = await _mediator.Send(byIdRequest);
+        var result = await _mediator.Send(request);
         if (result.IsFailed)
         {
             return BadRequest(new ErrorModel(result.StringifyErrors()));
@@ -90,6 +91,19 @@ public class OrderController : Controller
         }
 
         return Ok(result.Value.Orders);
+    }
+    
+    [HttpPut]
+    [Authorize(Roles = "administrator")]
+    public async Task<IActionResult> CloseOrderById([FromBody] CloseOrderByIdRequest request)
+    {
+        var result = await _mediator.Send(request);
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+
+        return Ok();
     }
     
 }

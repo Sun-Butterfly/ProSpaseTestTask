@@ -65,6 +65,20 @@ export default {
         alert(this.errorMessage);
       }
     },
+    async goToClose(i){
+      let orderId = this.orders[i].id
+      try {
+        await apiClient.put('/Order/CloseOrderById', {
+          orderId: orderId
+        });
+
+        alert('Заказ закрыт!');
+        await this.fetchOrders()
+      } catch (error) {
+        this.errorMessage = error.response.data.message
+        alert(this.errorMessage);
+      }
+    },
     goToHome() {
       this.$router.push({name: 'Admin'})
     }
@@ -114,6 +128,9 @@ export default {
           <button class="buttonAccept"
                   v-if="order.status === 'New'"
                   @click.stop="goToAccept(i)">Подтвердить заказ</button>
+          <button class="buttonClose"
+                  v-if="order.status === 'Processing'"
+                  @click.stop="goToClose(i)">Закрыть заказ</button>
         </td>
       </tr>
       </tbody>
