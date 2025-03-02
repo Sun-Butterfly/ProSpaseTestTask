@@ -48,8 +48,9 @@ public class OrderController : Controller
 
     [HttpDelete]
     [Authorize(Roles = "customer")]
-    public async Task<IActionResult> DeleteOrderById([FromBody] DeleteOrderByIdRequest request)
+    public async Task<IActionResult> DeleteOrderById([FromQuery] string orderId)
     {
+        var request = new DeleteOrderByIdRequest(orderId);
         var result = await _mediator.Send(request);
         
         if (result.IsFailed)

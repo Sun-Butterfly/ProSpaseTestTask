@@ -14,6 +14,9 @@ export default {
       let id = TokenService.getId()
       this.$router.push({name: 'Cart', query: {cartId: id}})
     },
+    goToOrders(){
+      this.$router.push({name: 'Orders_cust'})
+    },
     goToLogout() {
       TokenService.logOut()
       this.$router.push({name: 'Home'})
@@ -25,6 +28,7 @@ export default {
 <template>
   <button class="items" v-on:click="goToItems()">Товары</button>
   <button class="cart" v-on:click="goToCart()">Корзина</button>
+  <button class="cart" v-on:click="goToOrders()">Заказы</button>
   <button class="logout" v-on:click="goToLogout()">Выйти</button>
 </template>
 

@@ -16,7 +16,8 @@ public class DeleteOrderByIdHandler : IRequestHandler<DeleteOrderByIdRequest, Re
 
     public async Task<Result> Handle(DeleteOrderByIdRequest request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetById(request.OrderId, cancellationToken);
+        var orderIdGuid = Guid.Parse(request.OrderId);
+        var order = await _orderRepository.GetById(orderIdGuid, cancellationToken);
         if (order == null)
         {
             return Result.Fail("Заказ не найден!");

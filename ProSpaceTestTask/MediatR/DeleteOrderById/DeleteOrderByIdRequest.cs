@@ -3,4 +3,4 @@ using MediatR;
 
 namespace ProSpaceTestTask.MediatR.DeleteOrderById;
 
-public record DeleteOrderByIdRequest(Guid OrderId) : IRequest<Result>;
+public record DeleteOrderByIdRequest(string OrderId) : IRequest<Result>;
