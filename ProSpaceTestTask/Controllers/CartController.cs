@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSpaceTestTask.DTOs;
+using ProSpaceTestTask.MediatR.DeleteCartItemByCartItemId;
 using ProSpaceTestTask.MediatR.GetCartItemsByCartId;
 
 namespace ProSpaceTestTask.Controllers;
@@ -30,5 +31,20 @@ public class CartController : Controller
         }
 
         return Ok(result.Value.CartItems);
+    }
+
+    [HttpDelete]
+    [Authorize(Roles = "customer")]
+    public async Task<IActionResult> DeleteCartItemByCartItemId([FromQuery] long cartItemId, int count)
+    {
+        var request = new DeleteCartItemByCartItemIdRequest(cartItemId, count);
+        var result = await _mediator.Send(request);
+        
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+
+        return Ok();
     }
 }

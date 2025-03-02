@@ -27,20 +27,17 @@ class TokenService{
     static getId() {
         let token = this.getToken();
         if(token === null){
-            return -1;
+            return '';
         }
 
         let data = token.split(".")[1];
         data = window.atob(data)
         let jwt = JSON.parse(data);
-        let id  = ~~jwt["Id"]
+        let id = ''
+        id  = jwt["Id"]
         return id;
     }
-
-
-    static removeToken() {
-        localStorage.removeItem('authToken');
-    }
+    
 }
 
 export default TokenService

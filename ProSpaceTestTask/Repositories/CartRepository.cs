@@ -65,4 +65,14 @@ class CartRepository : ICartRepository
         
         
     }
+
+    public async Task<CartItem?> GetCartItemByCartItemId(long cartItemId, CancellationToken cancellationToken)
+    {
+        return await _db.CartItems.FirstOrDefaultAsync(x => x.Id == cartItemId, cancellationToken);
+    }
+
+    public async Task DeleteCartItem(CartItem cartItem, CancellationToken cancellationToken)
+    {
+        await _db.CartItems. Where(x=>x.Id == cartItem.Id).ExecuteDeleteAsync(cancellationToken);
+    }
 }

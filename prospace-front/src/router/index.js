@@ -12,6 +12,8 @@ import RedactItemPage from "@/components/RedactItemPage.vue";
 import CreateItemPage from "@/components/CreateItemPage.vue";
 import DeleteUserPage from "@/components/DeleteUserPage.vue";
 import DeleteItemPage from "@/components/DeleteItemPage.vue";
+import ItemsPageForCustomer from "@/components/ItemsPageForCustomer.vue";
+import CartPage from "@/components/CartPage.vue";
 
 
 const routes = [
@@ -79,6 +81,16 @@ const routes = [
         path: '/delete_item',
         name: 'Delete_item',
         component: DeleteItemPage,
+    },
+    {
+        path: '/items_cust',
+        name: 'Items_cust',
+        component: ItemsPageForCustomer,
+    },
+    {
+        path: '/cart',
+        name: 'Cart',
+        component: CartPage,
     },
     {
         path: '/**',
