@@ -46,7 +46,7 @@ export default {
   <form @submit.prevent="saveItem">
     <input type="text" placeholder="Название" v-model="item.name"/>
     <input type="text" placeholder="Цена" v-model="item.price"/>
-    <input type="text" placeholder="Категория" v-model="item.category"/>
+    <input type="text" placeholder="Категория" v-model="item.category" maxlength="30"/>
     <button type="submit">Сохранить</button>
   </form>
   <button v-on:click="goToCancel()">Отмена</button>
