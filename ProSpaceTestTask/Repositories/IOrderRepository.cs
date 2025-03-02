@@ -11,4 +11,5 @@ public interface IOrderRepository
     void Update(Order order);
     Task Delete(Order order, CancellationToken cancellationToken);
     Task<List<GetAllOrdersByCustomerIdDto>> GetAllByCustomerId(Guid customerId, CancellationToken cancellationToken);
+    Task<List<GetAllOrdersDto>> GetAll(CancellationToken cancellationToken);
 }

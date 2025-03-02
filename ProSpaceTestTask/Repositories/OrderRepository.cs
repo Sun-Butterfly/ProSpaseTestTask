@@ -76,4 +76,41 @@ class OrderRepository : IOrderRepository
         return result;
 
     }
+
+    public async Task<List<GetAllOrdersDto>> GetAll(CancellationToken cancellationToken)
+    {
+        var orders = await _db.Orders
+            .ToListAsync(cancellationToken);
+        
+        var orderIds = orders.Select(x => x.Id).ToList();
+        
+        var orderElements = await _db.OrderElements
+            .Where(x => orderIds.Contains(x.OrderId))
+            .ToListAsync(cancellationToken);
+        
+        var itemIds = orderElements.Select(x => x.ItemId).Distinct().ToList();
+        var items = await _db.Items
+            .Where(x => itemIds.Contains(x.Id))
+            .ToListAsync(cancellationToken);
+        
+        var result = orders.Select(order => new GetAllOrdersDto(
+            order.Id,
+            order.CustomerId,
+            order.OrderDate,
+            order.ShipmentDate,
+            order.OrderNumber,
+            order.Status,
+            orderElements
+                .Where(x => x.OrderId == order.Id)
+                .Select(y => new OrderElementDto(
+                    y.Id,
+                    items.FirstOrDefault(z => z.Id == y.ItemId)?.Name ?? "Unknown",
+                    items.FirstOrDefault(z => z.Id == y.ItemId)?.Category ?? "Unknown",
+                    y.ItemsCount,
+                    y.ItemPrice
+                )).ToList()
+        )).ToList();
+
+        return result;
+    }
 }
