@@ -5,6 +5,7 @@ using ProSpaceTestTask.DTOs;
 using ProSpaceTestTask.MediatR.AcceptOrderById;
 using ProSpaceTestTask.MediatR.CreateOrder;
 using ProSpaceTestTask.MediatR.DeleteOrderById;
+using ProSpaceTestTask.MediatR.GetAllOrdersByCustomerId;
 
 namespace ProSpaceTestTask.Controllers;
 
@@ -57,5 +58,20 @@ public class OrderController : Controller
         }
 
         return Ok();
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "customer")]
+    public async Task<IActionResult> GetAllOrdersByCustomerId([FromQuery] string customerId)
+    {
+        var request = new GetAllOrdersByCustomerIdRequest(customerId);
+        var result = await _mediator.Send(request);
+        
+        if (result.IsFailed)
+        {
+            return BadRequest(new ErrorModel(result.StringifyErrors()));
+        }
+
+        return Ok(result.Value.Orders);
     }
 }
